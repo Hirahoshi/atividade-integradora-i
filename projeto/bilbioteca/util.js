@@ -1,28 +1,49 @@
 // biblioteca/util.js
 
-// para validar o e-mail temos()
-
-function validarEmail(gmail){
-    //verificação do email
-    if (!email || !email.includes('@')){
-        return false; // caso nao atenda o critério a validação falha 
-    }
-return email.endsWith('.com') ||email.endsWith('.edu.br');
+/**
+ * Valida se o email possui formato válido
+ * Regras: deve conter @ e terminar com .com ou .edu.br
+ */
+function validarEmail(email) {
+    if (typeof email !== 'string') return false;
+    
+    // Verifica se contém @
+    if (!email.includes('@')) return false;
+    
+    // Verifica se termina com .com ou .edu.br
+    const dominio = email.split('@')[1];
+    if (!dominio) return false;
+    
+    return dominio.endsWith('.com') || dominio.endsWith('.edu.br');
 }
 
-//função para validar a matricula do aluno
-function validarMatricula(matricula){
-    //verifica se a matricula é um texto e remove os espaços em brancos (.trim()), 
-    return typeof matricula === 'string' && matricula.trim().length >0;
+/**
+ * Valida se a matrícula é válida
+ * Regra: deve ter exatamente 8 dígitos numéricos
+ */
+function validarMatricula(matricula) {
+    if (typeof matricula !== 'string') return false;
+    
+    // Verifica se tem 8 caracteres e são todos números
+    return /^\d{8}$/.test(matricula);
 }
 
-//função que valida o cpf
-function validarCPF(cpf){
-    //verifica se e um texto e se contem 11 caracteres 
-    return typeof cpf === 'string' && cpf.length === 11;
+/**
+ * Valida se o CPF é válido (formato básico)
+ * Regra: deve ter 11 dígitos numéricos
+ */
+function validarCPF(cpf) {
+    if (typeof cpf !== 'string') return false;
+    
+    // Remove pontos e traços para verificar apenas os números
+    const cpfLimpo = cpf.replace(/[^\d]/g, '');
+    
+    // Verifica se tem 11 dígitos e são todos números
+    return /^\d{11}$/.test(cpfLimpo);
 }
 
-
-//para exportar esta função temos
-
-module.exports = { validarEmail, validarMatricula, validarCPF};
+module.exports = {
+    validarEmail,
+    validarMatricula,
+    validarCPF
+};

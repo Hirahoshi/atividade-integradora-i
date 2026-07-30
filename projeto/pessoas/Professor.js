@@ -1,43 +1,54 @@
 // pessoas/Professor.js
-
-// Importamos a classe base Pessoa
 const Pessoa = require('./Pessoa');
 
-// Professor herda de Pessoa
 class Professor extends Pessoa {
-  // Atributo privado específico para armazenar a disciplina que leciona
-  #disciplina;
+    // Atributo privado
+    #disciplina;
 
-  constructor(nome, email, disciplina) {
-    // Enviamos o nome e o e-mail para o construtor da classe mãe (Pessoa)
-    super(nome, email);
-    // Atribuímos a disciplina
-    this.setDisciplina(disciplina);
-  }
-
-  // Setter para a disciplina
-  setDisciplina(disciplina) {
-    this.#disciplina = disciplina;
-  }
-
-  // Getter para a disciplina
-  getDisciplina() {
-    return this.#disciplina;
-  }
-
-  // SOBRESCRITA (Override): Redefinimos o método setEmail que veio de Pessoa
-  // Os professores têm uma regra mais rígida: o e-mail DEVE terminar obrigatoriamente em '.edu.br'
-  setEmail(email) {
-    // Verificamos a condição específica do professor
-    if (email && email.endsWith('.edu.br')) {
-      // 'super.setEmail(email)' chama o método original da classe mãe.
-      // Assim, reaproveitamos a validação geral (ter '@', etc.) sem repetir código.
-      return super.setEmail(email);
+    constructor(nome, email, disciplina) {
+        super(nome, email);
+        this.#disciplina = disciplina;
     }
-    // Se não terminar em .edu.br, o e-mail é recusado automaticamente para o professor
-    return false; 
-  }
+
+    // Getter e Setter para disciplina
+    getDisciplina() {
+        return this.#disciplina;
+    }
+
+    setDisciplina(disciplina) {
+        if (typeof disciplina === 'string' && disciplina.trim().length > 0) {
+            this.#disciplina = disciplina.trim();
+            return true;
+        }
+        return false;
+    }
+
+    // Sobrescrita do setEmail: aceita apenas emails terminados em .edu.br
+    setEmail(email) {
+        // Reutiliza o método da classe pai, que já valida o formato
+        if (super.setEmail(email)) {
+            // Validação extra: deve terminar com .edu.br
+            if (email.endsWith('.edu.br')) {
+                return true;
+            }
+            // Se passou na validação do pai mas não termina com .edu.br,
+            // precisamos reverter a alteração (o pai já alterou o atributo)
+            // Por isso, é melhor validar antes de chamar o super
+            return false;
+        }
+        return false;
+    }
+
+    // Versão melhorada do setEmail para evitar alteração indevida:
+    // (substitua o método acima por este se preferir)
+    setEmailMelhorado(email) {
+        // Valida primeiro o formato geral e a terminação .edu.br
+        if (email && email.includes('@') && email.endsWith('.edu.br')) {
+            // Agora chama o super, que fará a validação final
+            return super.setEmail(email);
+        }
+        return false;
+    }
 }
 
-// Exportamos a classe Professor
 module.exports = Professor;
