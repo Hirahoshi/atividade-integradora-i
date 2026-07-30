@@ -2,7 +2,6 @@
 const util = require('../biblioteca/util');
 
 class Pessoa {
-    // Atributos privados
     #nome;
     #email;
 
@@ -11,7 +10,6 @@ class Pessoa {
         this.#email = email;
     }
 
-    // Getters e Setters para nome
     getNome() {
         return this.#nome;
     }
@@ -24,7 +22,6 @@ class Pessoa {
         return false;
     }
 
-    // Getters e Setters para email (com validação)
     getEmail() {
         return this.#email;
     }

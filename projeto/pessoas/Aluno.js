@@ -3,7 +3,6 @@ const Pessoa = require('./Pessoa');
 const util = require('../biblioteca/util');
 
 class Aluno extends Pessoa {
-    // Atributo privado
     #matricula;
 
     constructor(nome, email, matricula) {
@@ -11,7 +10,6 @@ class Aluno extends Pessoa {
         this.#matricula = matricula;
     }
 
-    // Getter e Setter para matrícula (com validação)
     getMatricula() {
         return this.#matricula;
     }
